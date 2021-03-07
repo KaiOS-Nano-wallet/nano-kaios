@@ -1,8 +1,8 @@
 import type { NanoTransaction, NanoAddress, NanoAccount, RAW } from './models';
 import { getLanguage } from './language';
-import { rawToNano } from './nanocurrency-web-wrapper';
 import dateFormat from 'dateformat';
 import { BigNumber } from 'bignumber.js';
+import { NANO } from '@nanobox/nano-client/dist/models';
 
 export const transactionType = (transaction: NanoTransaction) => {
   switch (transaction.type) {
@@ -39,7 +39,7 @@ export const direction = (transaction: NanoTransaction) => {
 
 /** How we present values to the user */
 export const rawToReadable = (raw: RAW) => {
-  const number = new BigNumber(rawToNano(raw).amount);
+  const number = new BigNumber(NANO.fromRAW(raw.raw).asString);
   const decimalPlaces = number.decimalPlaces();
   const stringNumber = number.toFixed(Math.min(decimalPlaces, 6));
   if (decimalPlaces > 6) return `${stringNumber}..`;

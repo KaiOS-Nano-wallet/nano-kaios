@@ -1,9 +1,7 @@
 <script lang="ts">
-    import type {NanoAccount} from "../../machinery/models";
     import type { WalletState } from "../../machinery/WalletState";
     import {tools} from "nanocurrency-web";
-    import {sendNano, updateAccountInWallet} from "../../machinery/nano-ops";
-    import {nanoToRaw, rawToNumber} from "../../machinery/nanocurrency-web-wrapper";
+    import {updateAccountInWallet} from "../../machinery/nano-ops";
     import {navigationReload, pushAccountAction, pushToast} from "../../machinery/eventListener";
     import {load} from "../../machinery/loader-store";
     import {onMount} from "svelte";
@@ -14,6 +12,8 @@
     import {getLanguage} from "../../machinery/language";
     import Text from "../../components/Text.svelte";
     import {rawToReadable} from "../../machinery/text-utils";
+    import {client, fromAccount, toAccount} from "../../machinery/nano-client";
+    import * as NanoClient from "@nanobox/nano-client/dist/models";
 
     export let walletState: WalletState;
     $: wallet = walletState.wallet;
@@ -22,7 +22,7 @@
 
     let toAddress: string = walletState.sendToAddress || ''
     let sending: boolean = false;
-    let sendValue: string | undefined = undefined
+    let sendValue: number | undefined = undefined
 
     const softwareKeys = (disabledSend, disabledMax) => {
         return {
@@ -51,10 +51,10 @@
     }
 
     $: readableBalance = balance ? rawToReadable(balance) : ''
-    $: numberBalance = balance ? Number.parseFloat(rawToNumber(balance)) : 0
+    $: numberBalance = balance ? NanoClient.NANO.fromRAW(balance.raw).asNumber : 0
     $: disabledMax = numberBalance <= 0;
     $: {
-        const sendAsNumber = Number.parseFloat(sendValue)
+        const sendAsNumber = sendValue
         const canSend = (toAddress ? tools.validateAddress(toAddress) : false) && sendAsNumber <= numberBalance && sendAsNumber > 0
         setSoftwareKeys(softwareKeys(!canSend, disabledMax))
     }
@@ -62,7 +62,7 @@
 
     const setMax = async () => {
         if (balance && balance.raw && numberBalance > 0) {
-            sendValue = rawToNumber(balance)
+            sendValue = NanoClient.NANO.fromRAW(balance.raw).asNumber
         }
     }
 
@@ -70,8 +70,8 @@
         await load({
             languageId: 'sending-funds',
             load: async () => {
-                let amount = nanoToRaw({amount: sendValue});
-                const updatedAccount: NanoAccount | undefined = await sendNano(account, toAddress, amount)
+                const updated: NanoClient.NanoAccount | undefined = await client.send(toAccount(account), toAddress, NanoClient.NANO.fromNumber(sendValue))
+                const updatedAccount = updated ? fromAccount(account, updated) : undefined
                 if (updatedAccount) {
                     setWalletState({
                         wallet: updateAccountInWallet(updatedAccount, wallet),

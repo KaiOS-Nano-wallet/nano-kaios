@@ -4,10 +4,10 @@ import type {
   NanoTransaction,
   NanoWallet,
 } from './models';
-import { loadAndResolveAccountData, updateAccountInWallet } from './nano-ops';
-import { getHistory } from './nano-rpc-fetch-wrapper';
+import { updateAccountInWallet } from './nano-ops';
 import { pushToast } from './eventListener';
 import { writable, Writable } from 'svelte/store';
+import { client, fromAccount, toAccount, toTransaction } from './nano-client';
 
 export interface WalletState {
   wallet?: NanoWallet;
@@ -30,17 +30,20 @@ export async function updateWalletState(
     account: updatedAccount,
     resolvedCount,
     error,
-  } = await loadAndResolveAccountData(nanoAccount, 0);
-  const resolvedTransactions = await getHistory(nanoAccount.address);
+  } = await client.receive(toAccount(nanoAccount), 0);
+  const updated = fromAccount(nanoAccount, updatedAccount);
+  const resolvedTransactions = await client.getTransactions(
+    nanoAccount.address
+  );
   if (resolvedCount > 0) {
     pushToast({ languageId: 'got-new-transactions', type: 'success' });
   } else if (error) {
     pushToast({ languageId: error, type: 'warn' });
   }
   setWalletState({
-    wallet: updateAccountInWallet(updatedAccount, wallet),
-    account: updatedAccount,
-    transactions: resolvedTransactions,
+    wallet: updateAccountInWallet(updated, wallet),
+    account: updated,
+    transactions: resolvedTransactions.map(toTransaction),
     sendToAddress: sendToAddress,
   });
 }

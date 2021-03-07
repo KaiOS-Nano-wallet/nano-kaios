@@ -9,7 +9,7 @@
     import Text from "../../components/Text.svelte";
     import TextArea from "../../components/input/TextArea.svelte";
     import {tools} from "nanocurrency-web";
-    import {setRepresentative} from "../../machinery/nano-ops";
+    import {client, toAccount} from "../../machinery/nano-client";
 
     export let wallet: NanoWallet;
     export let selectedAccount: NanoAccount;
@@ -30,7 +30,7 @@
         }
         selectedAccount.alias = aliasValue
         selectedAccount.representative = representativeValue;
-        await setRepresentative(selectedAccount)
+        await client.setRepresentative(toAccount(selectedAccount))
         wallet.accounts = wallet.accounts.map(a => {
             if (a.address === selectedAccount.address) {
                 return selectedAccount;
