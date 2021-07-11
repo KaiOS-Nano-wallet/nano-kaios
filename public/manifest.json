@@ -60,7 +60,12 @@
       "name": "Kaiak",
       "subtitle": "Uma carteira segura para a moeda Nano",
       "description": "Uma carteira segura e rápida para o dinheiro digital. Envie dinheiro em segundos - de graça. Com uma criptomoeda semelhante ao Ethereum e Bitcoin, mas com transações sem taxas. Nano é rede de transferência de dinheiro instantânea e segura, com pagamentos globais e sem fronteiras em mente."
-    }
+    },
+    "ru-RU": {
+      "name": "Kaiak",
+      "subtitle": "Безопасный криптовалютный кошелёк Nano",
+      "description": "Безопасный и быстрый кошелек для криптовалюты. Отправляйте деньги за считанные секунды - бесплатно. Для криптовалюты, подобной Ethereum и Bitcoin, но с бесплатными транзакциями. Nano – это безопасная и мгновенная сеть денежных переводов, ориентированная на глобальные платежи без границ."
+    } 
   },
   "default_locale": "en-US"
 }
