@@ -52,6 +52,7 @@ Kaiak is currently available in these languages:
 * 🇳🇱 [Dutch](/public/locales/nl.properties)
 * 🇮🇷 [Farsi](/public/locales/fa.properties) – _Thanks_ Abolfazl Jafari
 * 🇧🇷 [Brazilian Portuguese](/public/locales/pt-BR.properties) – _Thanks_ [@marcosbmf](https://github.com/marcosbmf) and [@guil5566](https://github.com/guil5566)
+* 🇩🇰 [Danish](/public/locales/da-DK.properties) – _Thanks_ [@Lrss](https://github.com/Lrss)
 
 ### Add new language
 

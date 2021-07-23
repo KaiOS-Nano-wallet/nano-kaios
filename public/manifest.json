@@ -60,6 +60,11 @@
       "name": "Kaiak",
       "subtitle": "Uma carteira segura para a moeda Nano",
       "description": "Uma carteira segura e rápida para o dinheiro digital. Envie dinheiro em segundos - de graça. Com uma criptomoeda semelhante ao Ethereum e Bitcoin, mas com transações sem taxas. Nano é rede de transferência de dinheiro instantânea e segura, com pagamentos globais e sem fronteiras em mente."
+    },
+    "da-DK": {
+      "name": "Kaiak",
+      "subtitle": "En sikker Nano kryptovaluta tegnebog",
+      "description": "En sikker og hurtig digital tegnbog. Send penge på få sekunder - gratis. For en kryptovaluta svarende til Ethereum og Bitcoin, men med gebyrfrie transaktioner. Nano er et sikkert og lynhurtigt pengeoverførselsnetværk med en vision om globale betalinger uden grænser."
     }
   },
   "default_locale": "en-US"
